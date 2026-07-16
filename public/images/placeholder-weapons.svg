@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <rect width="640" height="360" fill="#101722"/>
+  <g stroke="#223042" stroke-width="1">
+    <path d="M0 60H640M0 120H640M0 180H640M0 240H640M0 300H640M80 0V360M160 0V360M240 0V360M320 0V360M400 0V360M480 0V360M560 0V360"/>
+  </g>
+  <circle cx="320" cy="180" r="120" fill="none" stroke="#3ecfe0" stroke-width="1" stroke-dasharray="6 8" opacity="0.4"/>
+  <!-- missile silhouette -->
+  <g transform="translate(320 180) rotate(-40)" fill="#ffb43a" opacity="0.9">
+    <path d="M0 -80 L12 -56 L12 40 L-12 40 L-12 -56 Z"/>
+    <path d="M-12 20 L-34 52 L-12 44 Z"/>
+    <path d="M12 20 L34 52 L12 44 Z"/>
+    <path d="M-8 44 L8 44 L0 78 Z" fill="#3ecfe0"/>
+  </g>
+  <text x="320" y="330" text-anchor="middle" font-family="monospace" font-size="18" letter-spacing="6" fill="#8296ab">WEAPONS MOD</text>
+</svg>

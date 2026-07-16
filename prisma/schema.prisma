@@ -1,0 +1,192 @@
+// DCS World Mods — database schema
+//
+// Local development uses SQLite so the site runs with zero setup.
+// For production, switch the datasource to PostgreSQL:
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")   // e.g. postgres://user:pass@host:5432/dcsmods
+// The schema itself is fully Postgres-compatible.
+//
+// NOTE: role/category/status fields are strings (not enums) because SQLite
+// does not support enums. Allowed values are enforced in src/lib/constants.ts.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  role         String   @default("USER") // USER | DEVELOPER | ADMIN
+  avatarUrl    String?
+  bio          String?
+  createdAt    DateTime @default(now())
+
+  mods        Mod[]
+  modComments ModComment[]
+  modRatings  ModRating[]
+  threads     Thread[]
+  posts       Post[]
+  postLikes   PostLike[]
+  reports     Report[]     @relation("reporter")
+  news        NewsItem[]
+  guides      Guide[]
+}
+
+model Mod {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  summary     String
+  description String
+  version     String
+  category    String // AIRCRAFT | WEAPONS | MAPS | MISSIONS | OTHER
+  imageUrl    String?
+  fileUrl     String?
+  externalUrl String?
+  downloads   Int      @default(0)
+  status      String   @default("PENDING") // PENDING | APPROVED | REJECTED
+  authorId    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  author      User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments    ModComment[]
+  ratings     ModRating[]
+  screenshots ModScreenshot[]
+
+  @@index([status, category])
+  @@index([authorId])
+}
+
+model ModScreenshot {
+  id        String @id @default(cuid())
+  url       String
+  sortOrder Int    @default(0)
+  modId     String
+
+  mod Mod @relation(fields: [modId], references: [id], onDelete: Cascade)
+
+  @@index([modId])
+}
+
+model ModRating {
+  id     String @id @default(cuid())
+  value  Int // 1–5
+  modId  String
+  userId String
+
+  mod  Mod  @relation(fields: [modId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([modId, userId])
+}
+
+model ModComment {
+  id        String   @id @default(cuid())
+  content   String
+  modId     String
+  userId    String
+  createdAt DateTime @default(now())
+
+  mod  Mod  @relation(fields: [modId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([modId])
+}
+
+model ForumCategory {
+  id          String @id @default(cuid())
+  name        String
+  slug        String @unique
+  description String
+  sortOrder   Int    @default(0)
+
+  threads Thread[]
+}
+
+model Thread {
+  id         String   @id @default(cuid())
+  title      String
+  pinned     Boolean  @default(false)
+  locked     Boolean  @default(false)
+  views      Int      @default(0)
+  categoryId String
+  authorId   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  category ForumCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  author   User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  posts    Post[]
+
+  @@index([categoryId, pinned, updatedAt])
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  content   String
+  threadId  String
+  authorId  String
+  createdAt DateTime @default(now())
+
+  thread Thread     @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  author User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  likes  PostLike[]
+
+  @@index([threadId])
+}
+
+model PostLike {
+  id     String @id @default(cuid())
+  postId String
+  userId String
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+}
+
+model Report {
+  id         String   @id @default(cuid())
+  targetType String // MOD | THREAD | POST | USER | COMMENT
+  targetId   String
+  reason     String
+  status     String   @default("OPEN") // OPEN | RESOLVED | DISMISSED
+  reporterId String
+  createdAt  DateTime @default(now())
+
+  reporter User @relation("reporter", fields: [reporterId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+}
+
+model NewsItem {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  authorId  String
+  createdAt DateTime @default(now())
+
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+}
+
+model Guide {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  summary   String
+  content   String
+  tag       String // GETTING_STARTED | LUA | TOOLS | PROJECTS
+  authorId  String
+  createdAt DateTime @default(now())
+
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+}

@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+@theme {
+  /* DCS HUD-inspired dark palette */
+  --color-base: #0a0e14;
+  --color-surface: #101722;
+  --color-raised: #16202e;
+  --color-line: #223042;
+  --color-ink: #d7e0ea;
+  --color-muted: #8296ab;
+  --color-hud: #ffb43a; /* amber HUD accent */
+  --color-hud-dim: #b97f1e;
+  --color-radar: #3ecfe0; /* cyan secondary */
+  --color-ok: #4ade80;
+  --color-danger: #f87171;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+body {
+  background-color: var(--color-base);
+  color: var(--color-ink);
+  background-image:
+    radial-gradient(
+      ellipse 80% 50% at 50% -20%,
+      rgba(62, 207, 224, 0.06),
+      transparent
+    ),
+    linear-gradient(rgba(34, 48, 66, 0.22) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 48, 66, 0.22) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    48px 48px,
+    48px 48px;
+}
+
+/* --- Reusable component classes --- */
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded px-4 py-2 text-sm font-semibold tracking-wide transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed;
+}
+.btn-primary {
+  @apply btn bg-hud text-[#0a0e14] hover:bg-hud/85;
+}
+.btn-secondary {
+  @apply btn border border-radar/50 text-radar hover:bg-radar/10;
+}
+.btn-ghost {
+  @apply btn border border-line text-ink hover:border-hud/60 hover:text-hud;
+}
+.btn-danger {
+  @apply btn border border-danger/50 text-danger hover:bg-danger/10;
+}
+
+.card {
+  @apply rounded-lg border border-line bg-surface/80 backdrop-blur-sm;
+}
+
+.input {
+  @apply w-full rounded border border-line bg-raised px-3 py-2 text-sm text-ink placeholder:text-muted/60 outline-none focus:border-hud/70 focus:ring-1 focus:ring-hud/40 transition-colors;
+}
+
+.label {
+  @apply mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted;
+}
+
+.hud-tag {
+  @apply inline-flex items-center rounded-sm border border-hud/40 bg-hud/10 px-2 py-0.5 font-mono text-[11px] uppercase tracking-widest text-hud;
+}
+
+.section-title {
+  @apply flex items-center gap-3 text-lg font-bold uppercase tracking-widest text-ink;
+}
+.section-title::before {
+  content: "";
+  @apply block h-4 w-1 bg-hud;
+}
+
+/* HUD-style corner brackets for hero/panel framing */
+.hud-corners {
+  position: relative;
+}
+.hud-corners::before,
+.hud-corners::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: var(--color-hud);
+  opacity: 0.7;
+}
+.hud-corners::before {
+  top: 0;
+  left: 0;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+.hud-corners::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}

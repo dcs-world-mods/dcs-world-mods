@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <rect width="640" height="360" fill="#101722"/>
+  <g stroke="#223042" stroke-width="1">
+    <path d="M0 60H640M0 120H640M0 180H640M0 240H640M0 300H640M80 0V360M160 0V360M240 0V360M320 0V360M400 0V360M480 0V360M560 0V360"/>
+  </g>
+  <circle cx="320" cy="180" r="120" fill="none" stroke="#3ecfe0" stroke-width="1" stroke-dasharray="6 8" opacity="0.4"/>
+  <!-- delta jet silhouette -->
+  <g transform="translate(320 180)" fill="#ffb43a" opacity="0.9">
+    <path d="M0 -70 L14 -20 L64 30 L64 44 L10 26 L8 48 L22 62 L-22 62 L-8 48 L-10 26 L-64 44 L-64 30 L-14 -20 Z"/>
+  </g>
+  <text x="320" y="330" text-anchor="middle" font-family="monospace" font-size="18" letter-spacing="6" fill="#8296ab">AIRCRAFT MOD</text>
+</svg>
