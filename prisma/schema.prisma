@@ -28,15 +28,28 @@ model User {
   bio          String?
   createdAt    DateTime @default(now())
 
-  mods        Mod[]
-  modComments ModComment[]
-  modRatings  ModRating[]
-  threads     Thread[]
-  posts       Post[]
-  postLikes   PostLike[]
-  reports     Report[]     @relation("reporter")
-  news        NewsItem[]
-  guides      Guide[]
+  mods             Mod[]
+  modComments      ModComment[]
+  modRatings       ModRating[]
+  threads          Thread[]
+  posts            Post[]
+  postLikes        PostLike[]
+  reports          Report[]                @relation("reporter")
+  news             NewsItem[]
+  guides           Guide[]
+  usernameRequests UsernameChangeRequest[]
+}
+
+model UsernameChangeRequest {
+  id          String   @id @default(cuid())
+  newUsername String
+  status      String   @default("OPEN") // OPEN | APPROVED | REJECTED
+  userId      String
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status])
 }
 
 model Mod {

@@ -51,6 +51,12 @@ export default async function ProfilePage({
 
   const isOwn = viewer?.id === user.id;
 
+  const pendingRequest = isOwn
+    ? await db.usernameChangeRequest.findFirst({
+        where: { userId: user.id, status: "OPEN" },
+      })
+    : null;
+
   const cards: ModCardData[] = user.mods.map((mod) => ({
     slug: mod.slug,
     title: mod.title,
@@ -87,7 +93,12 @@ export default async function ProfilePage({
         </div>
       </div>
 
-      {isOwn && <ProfileEditor initialBio={user.bio ?? ""} />}
+      {isOwn && (
+        <ProfileEditor
+          initialBio={user.bio ?? ""}
+          pendingUsername={pendingRequest?.newUsername ?? null}
+        />
+      )}
 
       {/* Mods */}
       {cards.length > 0 && (
