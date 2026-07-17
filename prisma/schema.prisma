@@ -22,7 +22,8 @@ model User {
   id           String   @id @default(cuid())
   username     String   @unique
   email        String   @unique
-  passwordHash String
+  passwordHash String? // null for Google-only accounts
+  googleId     String?  @unique
   role         String   @default("USER") // USER | DEVELOPER | ADMIN
   avatarUrl    String?
   bio          String?
@@ -38,6 +39,20 @@ model User {
   news             NewsItem[]
   guides           Guide[]
   usernameRequests UsernameChangeRequest[]
+  passwordResets   PasswordResetCode[]
+}
+
+model PasswordResetCode {
+  id        String   @id @default(cuid())
+  codeHash  String // sha256 of the 6-digit code
+  attempts  Int      @default(0)
+  expiresAt DateTime
+  userId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model UsernameChangeRequest {

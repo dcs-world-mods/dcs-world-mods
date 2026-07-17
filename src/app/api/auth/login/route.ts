@@ -22,8 +22,16 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    // Google-only accounts have no password — point them at the right button.
+    if (user && !user.passwordHash) {
+      return NextResponse.json(
+        { error: "This account uses Google sign-in. Use 'Continue with Google', or reset a password via 'Forgot password'." },
+        { status: 401 }
+      );
+    }
+
     // Same error for unknown user and wrong password (no user enumeration).
-    if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
+    if (!user || !(await bcrypt.compare(password, user.passwordHash!))) {
       return NextResponse.json(
         { error: "Invalid credentials" },
         { status: 401 }
