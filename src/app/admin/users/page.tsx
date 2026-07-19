@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { Avatar } from "@/components/Avatar";
@@ -110,8 +111,21 @@ export default async function AdminUsersPage() {
               <td className="p-4">
                 <div className="flex items-center gap-2">
                   <Avatar username={user.username} avatarUrl={user.avatarUrl} size="sm" />
-                  <span className="font-semibold text-ink">{user.username}</span>
+                  <Link
+                    href={`/admin/users/${user.id}`}
+                    className="font-semibold text-ink hover:text-hud"
+                  >
+                    {user.username}
+                  </Link>
                   {user.verified && <VerifiedBadge size={14} />}
+                  {user.banned && (
+                    <span className="font-mono text-[10px] text-danger">🔴 BANNED</span>
+                  )}
+                  {!user.banned &&
+                    user.suspendedUntil &&
+                    user.suspendedUntil > new Date() && (
+                      <span className="font-mono text-[10px] text-hud">🟡 SUSPENDED</span>
+                    )}
                 </div>
               </td>
               <td className="p-4 text-muted">{user.email}</td>

@@ -38,6 +38,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (user.banned) {
+      return NextResponse.json(
+        { error: "This account is permanently banned." },
+        { status: 403 }
+      );
+    }
+    if (user.suspendedUntil && user.suspendedUntil > new Date()) {
+      return NextResponse.json(
+        {
+          error: `This account is suspended until ${user.suspendedUntil.toISOString().slice(0, 16).replace("T", " ")} UTC.`,
+        },
+        { status: 403 }
+      );
+    }
+
     await createSession({
       userId: user.id,
       username: user.username,

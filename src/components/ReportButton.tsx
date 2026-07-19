@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { REPORT_CATEGORIES, REPORT_CATEGORY_LABELS } from "@/lib/constants";
 
 export function ReportButton({
   targetType,
@@ -10,6 +11,7 @@ export function ReportButton({
   targetId: string;
 }) {
   const [open, setOpen] = useState(false);
+  const [category, setCategory] = useState<string>("SPAM");
   const [reason, setReason] = useState("");
   const [done, setDone] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -20,7 +22,7 @@ export function ReportButton({
     const res = await fetch("/api/reports", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ targetType, targetId, reason }),
+      body: JSON.stringify({ targetType, targetId, category, reason }),
     });
     setBusy(false);
     if (res.ok) {
@@ -45,11 +47,22 @@ export function ReportButton({
           ⚑ Report
         </button>
       ) : (
-        <form onSubmit={submit} className="card w-64 space-y-2 p-3">
+        <form onSubmit={submit} className="card w-72 space-y-2 p-3">
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="input text-xs"
+          >
+            {REPORT_CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>
+                {REPORT_CATEGORY_LABELS[cat]}
+              </option>
+            ))}
+          </select>
           <textarea
             value={reason}
             onChange={(e) => setReason(e.target.value)}
-            placeholder="What's wrong with this content?"
+            placeholder="Describe the issue…"
             className="input min-h-16 text-xs"
             minLength={5}
             maxLength={1000}

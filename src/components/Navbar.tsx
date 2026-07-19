@@ -6,9 +6,20 @@ import { NavbarClient } from "./NavbarClient";
 
 export async function Navbar() {
   const user = await getCurrentUser();
-  const unread = user
-    ? await db.notification.count({ where: { userId: user.id, read: false } })
-    : 0;
+  const [unread, unreadMessages] = user
+    ? await Promise.all([
+        db.notification.count({ where: { userId: user.id, read: false } }),
+        db.message.count({
+          where: {
+            readAt: null,
+            senderId: { not: user.id },
+            conversation: {
+              OR: [{ userAId: user.id }, { userBId: user.id }],
+            },
+          },
+        }),
+      ])
+    : [0, 0];
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-base/90 backdrop-blur">
@@ -32,6 +43,7 @@ export async function Navbar() {
               : null
           }
           unread={unread}
+          unreadMessages={unreadMessages}
         />
       </div>
     </header>

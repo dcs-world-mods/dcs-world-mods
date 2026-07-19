@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { db } from "@/lib/db";
 import { timeAgo } from "@/lib/utils";
+import {
+  REPORT_CATEGORY_LABELS,
+  type ReportCategory,
+} from "@/lib/constants";
 import { ReportActions } from "./ReportActions";
 
 export const metadata: Metadata = { title: "Reports" };
@@ -26,6 +31,10 @@ export default async function AdminReportsPage() {
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <span className="hud-tag">{report.targetType}</span>
+              <span className="hud-tag !border-danger/40 !bg-danger/10 !text-danger">
+                {REPORT_CATEGORY_LABELS[report.category as ReportCategory] ??
+                  report.category}
+              </span>
               <span
                 className={`font-mono text-xs ${
                   report.status === "OPEN"
@@ -38,11 +47,18 @@ export default async function AdminReportsPage() {
                 {report.status}
               </span>
               <span className="font-mono text-xs text-muted">
-                by {report.reporter.username} · {timeAgo(report.createdAt)} ·
-                target: {report.targetId}
+                by {report.reporter.username} · {timeAgo(report.createdAt)}
               </span>
             </div>
             <p className="mt-1 text-sm text-ink/90">{report.reason}</p>
+            {report.targetType === "MESSAGE" && (
+              <Link
+                href={`/admin/reports/message/${report.targetId}`}
+                className="mt-1 inline-block font-mono text-xs text-radar hover:text-hud"
+              >
+                🔍 View reported conversation →
+              </Link>
+            )}
           </div>
           {report.status === "OPEN" && <ReportActions reportId={report.id} />}
         </div>

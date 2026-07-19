@@ -150,11 +150,19 @@ export default async function ProfilePage({
             )}
           </div>
           {viewer && !isOwn && (
-            <FollowButton
-              userId={user.id}
-              initialFollowing={Boolean(viewerFollows)}
-              initialCount={user._count.followers}
-            />
+            <div className="flex flex-col gap-2">
+              <FollowButton
+                userId={user.id}
+                initialFollowing={Boolean(viewerFollows)}
+                initialCount={user._count.followers}
+              />
+              <Link
+                href={`/messages?to=${encodeURIComponent(user.username)}`}
+                className="btn-ghost"
+              >
+                ✉ Message
+              </Link>
+            </div>
           )}
         </div>
 

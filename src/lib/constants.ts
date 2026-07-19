@@ -53,7 +53,49 @@ export const REPORT_TARGETS = [
   "POST",
   "USER",
   "COMMENT",
+  "MESSAGE",
 ] as const;
+
+export const REPORT_CATEGORIES = [
+  "SPAM",
+  "OFFENSIVE",
+  "HARASSMENT",
+  "COPYRIGHT",
+  "SUSPICIOUS_FILE",
+  "OTHER",
+] as const;
+export type ReportCategory = (typeof REPORT_CATEGORIES)[number];
+
+export const REPORT_CATEGORY_LABELS: Record<ReportCategory, string> = {
+  SPAM: "Spam",
+  OFFENSIVE: "Offensive content",
+  HARASSMENT: "Harassment",
+  COPYRIGHT: "Copyright violation",
+  SUSPICIOUS_FILE: "Suspicious file",
+  OTHER: "Other",
+};
+
+export const MODERATION_TYPES = [
+  "WARNING",
+  "SUSPENSION",
+  "BAN",
+  "UNBAN",
+] as const;
+export type ModerationType = (typeof MODERATION_TYPES)[number];
+
+export const SUSPENSION_PRESETS = [
+  { label: "1 day", days: 1 },
+  { label: "3 days", days: 3 },
+  { label: "1 week", days: 7 },
+  { label: "1 month", days: 30 },
+] as const;
+
+// Auto-moderation defaults (editable via admin settings, stored in SiteSetting)
+export const AUTOMOD_DEFAULTS = {
+  warningsForSuspension: 3,
+  suspensionDays: 7,
+  warningsForBan: 5,
+};
 
 export const SOCIAL = {
   youtube: "https://youtube.com/@dcsworldmods",

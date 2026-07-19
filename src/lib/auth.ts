@@ -68,17 +68,41 @@ export async function getCurrentUser() {
       username: true,
       email: true,
       role: true,
+      verified: true,
       avatarUrl: true,
       bio: true,
+      banned: true,
+      suspendedUntil: true,
+      lastSeenAt: true,
       createdAt: true,
     },
   });
+
+  // Presence: refresh lastSeenAt at most every 2 minutes.
+  if (
+    user &&
+    (!user.lastSeenAt || Date.now() - user.lastSeenAt.getTime() > 2 * 60 * 1000)
+  ) {
+    db.user
+      .update({ where: { id: user.id }, data: { lastSeenAt: new Date() } })
+      .catch(() => {});
+  }
+
   return user;
 }
 
 export async function requireUser() {
   const user = await getCurrentUser();
   if (!user) throw new AuthError("Not authenticated", 401);
+  if (user.banned) {
+    throw new AuthError("Your account is permanently banned", 403);
+  }
+  if (user.suspendedUntil && user.suspendedUntil > new Date()) {
+    throw new AuthError(
+      `Your account is suspended until ${user.suspendedUntil.toISOString().slice(0, 16).replace("T", " ")} UTC`,
+      403
+    );
+  }
   return user;
 }
 

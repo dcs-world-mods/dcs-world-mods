@@ -20,9 +20,11 @@ type NavUser = {
 export function NavbarClient({
   user,
   unread = 0,
+  unreadMessages = 0,
 }: {
   user: NavUser;
   unread?: number;
+  unreadMessages?: number;
 }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -64,6 +66,19 @@ export function NavbarClient({
 
   const auth = user ? (
     <div className="flex items-center gap-3">
+      <Link
+        href="/messages"
+        onClick={() => setOpen(false)}
+        className="relative text-lg text-muted transition-colors hover:text-hud"
+        aria-label="Messages"
+      >
+        ✉
+        {unreadMessages > 0 && (
+          <span className="absolute -right-2 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-radar px-1 font-mono text-[10px] font-bold text-[#0a0e14]">
+            {unreadMessages > 9 ? "9+" : unreadMessages}
+          </span>
+        )}
+      </Link>
       <Link
         href="/notifications"
         onClick={() => setOpen(false)}

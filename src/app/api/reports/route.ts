@@ -3,11 +3,12 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { handleApiError } from "@/lib/api";
-import { REPORT_TARGETS } from "@/lib/constants";
+import { REPORT_CATEGORIES, REPORT_TARGETS } from "@/lib/constants";
 
 const reportSchema = z.object({
   targetType: z.enum(REPORT_TARGETS),
   targetId: z.string().min(1).max(64),
+  category: z.enum(REPORT_CATEGORIES).default("OTHER"),
   reason: z.string().min(5, "Please describe the issue").max(1000),
 });
 

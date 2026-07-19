@@ -7,6 +7,7 @@ const TABS = [
   { href: "/admin/users", label: "Users" },
   { href: "/admin/mods", label: "Mod Approval" },
   { href: "/admin/reports", label: "Reports" },
+  { href: "/admin/moderation", label: "Auto-Mod Rules" },
 ];
 
 export default async function AdminLayout({
