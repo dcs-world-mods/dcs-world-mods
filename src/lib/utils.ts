@@ -29,6 +29,14 @@ export function formatNumber(n: number): string {
   return String(n);
 }
 
+/** Strips HTML tags for plain-text previews (not for security — use sanitize-html for that). */
+export function stripHtml(html: string): string {
+  return html
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export function formatDate(date: Date | string): string {
   const d = typeof date === "string" ? new Date(date) : date;
   return d.toLocaleDateString("en-US", {

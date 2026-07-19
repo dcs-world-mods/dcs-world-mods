@@ -77,6 +77,47 @@ body {
   @apply block h-4 w-1 bg-hud;
 }
 
+/* Styling for sanitized third-party article HTML (SEO Agent news posts) */
+.prose-dcs {
+  @apply text-sm leading-relaxed text-ink/90;
+}
+.prose-dcs :where(h1, h2, h3) {
+  @apply mt-6 mb-2 font-bold text-ink;
+}
+.prose-dcs h1 {
+  @apply text-xl;
+}
+.prose-dcs h2 {
+  @apply text-lg;
+}
+.prose-dcs h3 {
+  @apply text-base;
+}
+.prose-dcs p {
+  @apply mb-3;
+}
+.prose-dcs a {
+  @apply text-radar underline hover:text-hud;
+}
+.prose-dcs ul {
+  @apply mb-3 list-disc space-y-1 pl-5;
+}
+.prose-dcs ol {
+  @apply mb-3 list-decimal space-y-1 pl-5;
+}
+.prose-dcs img {
+  @apply my-4 rounded border border-line;
+}
+.prose-dcs blockquote {
+  @apply my-3 border-l-2 border-hud/50 pl-4 italic text-muted;
+}
+.prose-dcs code {
+  @apply rounded bg-raised px-1 py-0.5 font-mono text-xs;
+}
+.prose-dcs pre {
+  @apply my-3 overflow-x-auto rounded border border-line bg-raised p-3 font-mono text-xs;
+}
+
 /* HUD-style corner brackets for hero/panel framing */
 .hud-corners {
   position: relative;

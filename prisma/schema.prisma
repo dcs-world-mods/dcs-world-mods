@@ -321,9 +321,14 @@ model Report {
 model NewsItem {
   id        String   @id @default(cuid())
   title     String
+  slug      String?  @unique
+  summary   String?
   content   String
+  isHtml    Boolean  @default(false) // true for sanitized HTML from SEO Agent
+  source    String   @default("MANUAL") // MANUAL | SEO_AGENT
   authorId  String
   createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }

@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { SITE_NAME, SITE_TAGLINE, SOCIAL } from "@/lib/constants";
 import { ModCard, type ModCardData } from "@/components/ModCard";
 import { Avatar } from "@/components/Avatar";
-import { timeAgo } from "@/lib/utils";
+import { stripHtml, timeAgo } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -139,34 +139,48 @@ export default async function HomePage() {
       {/* News + community */}
       <section className="grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <h2 className="section-title mb-6">News &amp; Updates</h2>
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="section-title">News &amp; Updates</h2>
+            <Link href="/news" className="font-mono text-sm text-radar hover:text-hud">
+              View all →
+            </Link>
+          </div>
           {news.length === 0 ? (
             <div className="card p-10 text-center text-muted">
               No news posted yet.
             </div>
           ) : (
             <div className="space-y-4">
-              {news.map((item) => (
-                <article key={item.id} className="card p-5">
-                  <div className="mb-2 flex items-center gap-3">
-                    <Avatar
-                      username={item.author.username}
-                      avatarUrl={item.author.avatarUrl}
-                      size="sm"
-                    />
-                    <span className="text-sm text-radar">
-                      {item.author.username}
-                    </span>
-                    <span className="font-mono text-xs text-muted">
-                      {timeAgo(item.createdAt)}
-                    </span>
-                  </div>
-                  <h3 className="font-bold text-ink">{item.title}</h3>
-                  <p className="mt-1 whitespace-pre-line text-sm text-muted">
-                    {item.content}
-                  </p>
-                </article>
-              ))}
+              {news.map((item) => {
+                const preview = item.isHtml
+                  ? stripHtml(item.content)
+                  : item.content;
+                return (
+                  <Link
+                    key={item.id}
+                    href={item.slug ? `/news/${item.slug}` : "/news"}
+                    className="card block p-5 transition-colors hover:border-hud/60"
+                  >
+                    <div className="mb-2 flex items-center gap-3">
+                      <Avatar
+                        username={item.author.username}
+                        avatarUrl={item.author.avatarUrl}
+                        size="sm"
+                      />
+                      <span className="text-sm text-radar">
+                        {item.author.username}
+                      </span>
+                      <span className="font-mono text-xs text-muted">
+                        {timeAgo(item.createdAt)}
+                      </span>
+                    </div>
+                    <h3 className="font-bold text-ink">{item.title}</h3>
+                    <p className="mt-1 line-clamp-2 text-sm text-muted">
+                      {item.summary ?? preview}
+                    </p>
+                  </Link>
+                );
+              })}
             </div>
           )}
         </div>
