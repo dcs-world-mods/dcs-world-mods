@@ -21,6 +21,9 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_TAGLINE,
+  verification: {
+    google: "aW7SmvSu6o_lSPdmwpfaqEAkl1RI4GkbUdpnpmifs_0",
+  },
 };
 
 export default function RootLayout({
@@ -35,7 +38,9 @@ export default function RootLayout({
     >
       <body className="flex min-h-screen flex-col">
         <Navbar />
-        <main className="mx-auto w-full max-w-7xl flex-1 px-4">{children}</main>
+        <main className="mx-auto w-full max-w-7xl flex-1 px-4">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>
