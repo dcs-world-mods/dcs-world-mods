@@ -23,10 +23,18 @@ export function DownloadButton({
     router.refresh();
   }
 
+  if (!available) {
+    return (
+      <button disabled className="btn-secondary w-full cursor-default text-base opacity-80">
+        🔜 Coming Soon
+      </button>
+    );
+  }
+
   return (
     <button
       onClick={download}
-      disabled={!available || busy}
+      disabled={busy}
       className="btn-primary w-full text-base"
     >
       ⬇ {busy ? "Preparing…" : "Download"}

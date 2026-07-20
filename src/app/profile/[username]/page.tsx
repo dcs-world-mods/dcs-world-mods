@@ -91,6 +91,7 @@ export default async function ProfilePage({
         ? mod.ratings.reduce((sum, r) => sum + r.value, 0) / mod.ratings.length
         : 0,
     ratingCount: mod.ratings.length,
+    available: Boolean(mod.fileUrl || mod.externalUrl),
   }));
 
   // Developer stats across all published mods.

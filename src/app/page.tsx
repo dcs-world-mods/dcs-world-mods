@@ -48,6 +48,7 @@ export default async function HomePage() {
         ? mod.ratings.reduce((sum, r) => sum + r.value, 0) / mod.ratings.length
         : 0,
     ratingCount: mod.ratings.length,
+    available: Boolean(mod.fileUrl || mod.externalUrl),
   }));
 
   return (

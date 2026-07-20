@@ -28,9 +28,11 @@ export type ModCardData = {
   author: { username: string };
   avgRating: number;
   ratingCount: number;
+  available?: boolean; // false = no file/link yet ("Coming Soon")
 };
 
 export function ModCard({ mod }: { mod: ModCardData }) {
+  const available = mod.available ?? true;
   return (
     <Link
       href={`/mods/${mod.slug}`}
@@ -40,11 +42,18 @@ export function ModCard({ mod }: { mod: ModCardData }) {
         <img
           src={mod.imageUrl ?? categoryPlaceholder(mod.category)}
           alt={mod.title}
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className={`h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 ${
+            available ? "" : "opacity-70 grayscale-[35%]"
+          }`}
         />
         <span className="hud-tag absolute left-2 top-2">
           {MOD_CATEGORY_LABELS[mod.category as ModCategory] ?? mod.category}
         </span>
+        {!available && (
+          <span className="absolute right-2 top-2 rounded-sm border border-radar/50 bg-radar/10 px-2 py-0.5 font-mono text-[11px] uppercase tracking-widest text-radar">
+            🔜 Coming Soon
+          </span>
+        )}
       </div>
       <div className="flex flex-1 flex-col gap-2 p-4">
         <div className="flex items-start justify-between gap-2">
@@ -62,7 +71,11 @@ export function ModCard({ mod }: { mod: ModCardData }) {
           </span>
           <span className="flex items-center gap-3">
             <Stars value={mod.avgRating} size="text-xs" />
-            <span className="font-mono">⬇ {formatNumber(mod.downloads)}</span>
+            {available ? (
+              <span className="font-mono">⬇ {formatNumber(mod.downloads)}</span>
+            ) : (
+              <span className="font-mono text-radar">Soon</span>
+            )}
           </span>
         </div>
       </div>
