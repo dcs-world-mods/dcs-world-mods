@@ -6,6 +6,7 @@ const TABS = [
   { href: "/admin", label: "Overview" },
   { href: "/admin/users", label: "Users" },
   { href: "/admin/mods", label: "Mod Approval" },
+  { href: "/admin/news", label: "News" },
   { href: "/admin/reports", label: "Reports" },
   { href: "/admin/moderation", label: "Auto-Mod Rules" },
 ];
