@@ -4,7 +4,11 @@ import { db } from "@/lib/db";
 import { GUIDE_TAG_LABELS, SOCIAL, type GuideTag } from "@/lib/constants";
 import { timeAgo } from "@/lib/utils";
 
-export const metadata: Metadata = { title: "Developer Hub" };
+export const metadata: Metadata = {
+  title: "Developer Hub",
+  description:
+    "Guides, Lua scripting tips and tooling for building DCS World mods.",
+};
 export const dynamic = "force-dynamic";
 
 export default async function DevelopersPage() {

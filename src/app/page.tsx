@@ -64,7 +64,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-b from-base/60 via-base/40 to-base/90" />
         <div className="relative">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo.svg" alt="" className="mx-auto h-20 w-20 sm:h-24 sm:w-24" />
+        <img src="/logo.svg" alt="DCS World Mods logo" className="mx-auto h-20 w-20 sm:h-24 sm:w-24" />
         <p className="mt-5 font-mono text-xs uppercase tracking-[0.4em] text-radar">
           // Community Operations Center
         </p>

@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
@@ -19,6 +20,42 @@ import { categoryPlaceholder } from "@/components/ModCard";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const mod = await db.mod.findUnique({
+    where: { slug },
+    select: {
+      title: true,
+      summary: true,
+      version: true,
+      category: true,
+      imageUrl: true,
+      status: true,
+    },
+  });
+  if (!mod || mod.status !== "APPROVED") return {};
+
+  const categoryLabel =
+    MOD_CATEGORY_LABELS[mod.category as ModCategory] ?? mod.category;
+  const title = `${mod.title} (v${mod.version}) — ${categoryLabel}`;
+  const description = mod.summary;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      images: mod.imageUrl ? [mod.imageUrl] : undefined,
+    },
+  };
+}
 
 export default async function ModPage({
   params,

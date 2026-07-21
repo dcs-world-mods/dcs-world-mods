@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
@@ -5,6 +6,23 @@ import { GUIDE_TAG_LABELS, type GuideTag } from "@/lib/constants";
 import { formatDate } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const guide = await db.guide.findUnique({
+    where: { slug },
+    select: { title: true, summary: true },
+  });
+  if (!guide) return {};
+  return {
+    title: `${guide.title} — Developer Hub`,
+    description: guide.summary,
+  };
+}
 
 export default async function GuidePage({
   params,

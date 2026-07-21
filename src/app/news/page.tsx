@@ -4,7 +4,10 @@ import { db } from "@/lib/db";
 import { Avatar } from "@/components/Avatar";
 import { formatDate, stripHtml, timeAgo } from "@/lib/utils";
 
-export const metadata: Metadata = { title: "News" };
+export const metadata: Metadata = {
+  title: "News",
+  description: "Latest news and updates from the DCS World Mods community.",
+};
 export const dynamic = "force-dynamic";
 
 export default async function NewsListPage() {

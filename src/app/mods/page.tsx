@@ -4,7 +4,11 @@ import { db } from "@/lib/db";
 import { ModCard, type ModCardData } from "@/components/ModCard";
 import { MOD_CATEGORIES, MOD_CATEGORY_LABELS } from "@/lib/constants";
 
-export const metadata: Metadata = { title: "Mods Library" };
+export const metadata: Metadata = {
+  title: "Mods Library",
+  description:
+    "Browse and download DCS World mods — aircraft, weapons, maps and missions from the community.",
+};
 export const dynamic = "force-dynamic";
 
 const SORTS = {

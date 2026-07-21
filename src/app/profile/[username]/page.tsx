@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
@@ -11,6 +12,29 @@ import { formatDate, formatNumber, timeAgo } from "@/lib/utils";
 import { ProfileEditor } from "./ProfileEditor";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ username: string }>;
+}): Promise<Metadata> {
+  const { username } = await params;
+  const user = await db.user.findUnique({
+    where: { username },
+    select: {
+      username: true,
+      bio: true,
+      verified: true,
+      _count: { select: { mods: true } },
+    },
+  });
+  if (!user) return {};
+  const title = `${user.username}${user.verified ? " ✔" : ""} — Pilot Profile`;
+  const description =
+    user.bio ??
+    `${user.username} on DCS World Mods — ${user._count.mods} published mod${user._count.mods === 1 ? "" : "s"}.`;
+  return { title, description };
+}
 
 export default async function ProfilePage({
   params,

@@ -28,6 +28,7 @@ export const metadata: Metadata = {
 };
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID;
+const WRITESONIC_SITE_ID = process.env.NEXT_PUBLIC_WRITESONIC_SITE_ID;
 
 export default function RootLayout({
   children,
@@ -52,6 +53,22 @@ export default function RootLayout({
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
                 gtag('config', '${GA_MEASUREMENT_ID}');
+              `}
+            </Script>
+          </>
+        )}
+        {WRITESONIC_SITE_ID && (
+          <>
+            <Script
+              src="https://seo-fixer.writesonic.com/site-audit/fixer-script/index.js"
+              strategy="afterInteractive"
+            />
+            <Script id="writesonic-seo-fixer" strategy="afterInteractive">
+              {`
+                wsSEOfixer.configure({
+                  hostURL: 'https://seo-fixer.writesonic.com',
+                  siteID: '${WRITESONIC_SITE_ID}'
+                });
               `}
             </Script>
           </>

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
@@ -6,12 +7,33 @@ import { Avatar } from "@/components/Avatar";
 import { RoleBadge } from "@/components/RoleBadge";
 import { ReportButton } from "@/components/ReportButton";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
-import { formatDate, timeAgo } from "@/lib/utils";
+import { formatDate, stripHtml, timeAgo } from "@/lib/utils";
 import { ReplyForm } from "./ReplyForm";
 import { LikeButton } from "./LikeButton";
 import { ModerateBar } from "./ModerateBar";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const thread = await db.thread.findUnique({
+    where: { id },
+    include: {
+      category: { select: { name: true } },
+      posts: { orderBy: { createdAt: "asc" }, take: 1, select: { content: true } },
+    },
+  });
+  if (!thread) return {};
+  const firstPost = thread.posts[0]?.content ?? "";
+  return {
+    title: `${thread.title} — ${thread.category.name}`,
+    description: stripHtml(firstPost).slice(0, 160),
+  };
+}
 
 export default async function ThreadPage({
   params,

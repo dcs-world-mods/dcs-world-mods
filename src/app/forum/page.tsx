@@ -3,7 +3,11 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 import { timeAgo } from "@/lib/utils";
 
-export const metadata: Metadata = { title: "Community Forum" };
+export const metadata: Metadata = {
+  title: "Community Forum",
+  description:
+    "Discuss DCS World mods, mission building, bug reports and more with the community.",
+};
 export const dynamic = "force-dynamic";
 
 export default async function ForumPage({
