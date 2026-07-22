@@ -32,6 +32,26 @@ export const metadata: Metadata = {
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID;
 const WRITESONIC_SITE_ID = process.env.NEXT_PUBLIC_WRITESONIC_SITE_ID;
+const BASE_URL = process.env.APP_URL ?? "https://dcs-world-mods.vercel.app";
+
+// Tells Google the site's name and logo (instead of defaulting to the host's).
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      name: SITE_NAME,
+      alternateName: "DCS World Mods Community Hub",
+      url: BASE_URL,
+    },
+    {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: BASE_URL,
+      logo: `${BASE_URL}/icon.png`,
+    },
+  ],
+};
 
 export default function RootLayout({
   children,
@@ -44,6 +64,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-screen flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
         {GA_MEASUREMENT_ID && (
           <>
             <Script
