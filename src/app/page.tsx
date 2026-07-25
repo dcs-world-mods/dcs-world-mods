@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { db } from "@/lib/db";
 import { SITE_NAME, SITE_TAGLINE, SOCIAL } from "@/lib/constants";
 import { ModCard, type ModCardData } from "@/components/ModCard";
@@ -55,11 +56,15 @@ export default async function HomePage() {
     <div className="space-y-16 pb-8">
       {/* Hero */}
       <section className="hud-corners relative mt-8 overflow-hidden rounded-lg border border-line px-6 py-16 text-center sm:py-24">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src="/images/hero-launch.jpg"
           alt=""
-          className="absolute inset-0 h-full w-full object-cover opacity-35"
+          fill
+          preload
+          fetchPriority="high"
+          sizes="100vw"
+          quality={70}
+          className="object-cover opacity-35"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-base/60 via-base/40 to-base/90" />
         <div className="relative">
