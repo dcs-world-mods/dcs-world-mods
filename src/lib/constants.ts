@@ -100,6 +100,7 @@ export const AUTOMOD_DEFAULTS = {
 export const SOCIAL = {
   youtube: "https://youtube.com/@dcsworldmods",
   discord: "https://discord.gg/RAdwkaAWma",
+  whatsapp: "https://whatsapp.com/channel/0029VbDFXVj2f3ENUZyo5V1L",
 };
 
 export const SITE_NAME = "DCS World Mods";

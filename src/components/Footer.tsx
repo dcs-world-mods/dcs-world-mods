@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SITE_NAME, SOCIAL } from "@/lib/constants";
+import { WhatsAppIcon } from "./WhatsAppIcon";
 
 export function Footer() {
   return (
@@ -38,6 +39,16 @@ export function Footer() {
             <li>
               <a href={SOCIAL.discord} target="_blank" rel="noopener noreferrer" className="hover:text-hud">
                 ⌬ Discord Community
+              </a>
+            </li>
+            <li>
+              <a
+                href={SOCIAL.whatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 hover:text-[#25D366]"
+              >
+                <WhatsAppIcon size={14} /> WhatsApp Channel
               </a>
             </li>
           </ul>

@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { SITE_NAME, SITE_TAGLINE, SOCIAL } from "@/lib/constants";
 import { ModCard, type ModCardData } from "@/components/ModCard";
 import { Avatar } from "@/components/Avatar";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { stripHtml, timeAgo } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -95,6 +96,14 @@ export default async function HomePage() {
             className="btn-secondary"
           >
             ▶ Watch YouTube
+          </a>
+          <a
+            href={SOCIAL.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-whatsapp"
+          >
+            <WhatsAppIcon /> WhatsApp Channel
           </a>
           <Link href="/mods" className="btn-ghost">
             ✈ Explore Mods
@@ -212,6 +221,14 @@ export default async function HomePage() {
               className="btn-secondary w-full"
             >
               Subscribe on YouTube
+            </a>
+            <a
+              href={SOCIAL.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-whatsapp w-full"
+            >
+              <WhatsAppIcon /> Follow our WhatsApp Channel
             </a>
             <Link href="/register" className="btn-ghost w-full">
               Create an Account
